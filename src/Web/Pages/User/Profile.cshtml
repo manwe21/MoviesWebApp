@@ -1,0 +1,23 @@
+﻿@page "/user/{username}/profile"
+@model Web.Pages.User.ProfileModel;
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.Username + " - Profile";
+}
+
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("User/UserNavMenu", Model.Username)
+    </div>
+    <div class="col-9">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-12">
+                <img class="user-avatar" src="~/images/user-sample.png" alt="avatar"/>
+            </div>
+            <div class="col-lg-9 col-md-6 col-sm-12">
+                <h3 class="text-white">@Model.Username</h3>
+                <h6 class="text-white">Registration Date: 12.05.2020</h6>
+            </div>
+        </div>
+    </div>
+</div>

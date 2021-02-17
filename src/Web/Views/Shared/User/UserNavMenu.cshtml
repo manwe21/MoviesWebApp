@@ -1,0 +1,13 @@
+﻿@model string
+
+<ul class="nav flex-column options-list">
+    <li class="nav-item link-tab" id="profile-link">
+        <a asp-page="Profile" asp-route-username="@Model" class="nav-link">Profile</a>
+    </li>
+    <li class="nav-item link-tab" id="movies-link">
+        <a asp-page="Movies" asp-route-username="@Model" class="nav-link">Movies</a>
+    </li>
+    <li class="nav-item link-tab" id="lists-link">
+        <a asp-page="Folders" asp-route-username="@Model" class="nav-link">Lists</a>
+    </li>
+</ul>

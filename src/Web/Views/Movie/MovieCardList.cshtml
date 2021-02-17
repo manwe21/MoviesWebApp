@@ -1,0 +1,26 @@
+﻿@model Web.Models.Movie.MovieListPagedViewModel
+@{
+    Layout = null;
+}
+
+<div class="row">
+    @if (Model.RowsCount == 0)
+    {
+        <h4 class="text-white"> No results</h4>
+        return;
+    }
+    @foreach (var movie in Model.Movies)
+    {
+        <div class="col-lg-3 col-md-3 col-sm-6">
+            @await Html.PartialAsync("Movie/MovieCard", movie)
+        </div>
+    }
+</div>
+@if (Model.PagesCount - Model.PageNumber >= 1)
+{
+    <div style="width: 30%">
+        <div id="loadmore-btn" class="btn btn-danger">
+            <span>Load more (@(Model.RowsCount - Model.PageSize * Model.PageNumber))</span>
+        </div>
+    </div>
+}

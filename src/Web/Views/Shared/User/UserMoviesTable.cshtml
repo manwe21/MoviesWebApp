@@ -1,0 +1,90 @@
+﻿@using Web.Models.Movie
+@using Core.Application.Dto
+@using Web.Pages.User
+@using Web.Views
+@model Web.Models.User.UserMoviesTableViewModel
+
+@if (!Model.Movies.Results.Any())
+{
+    <p class="text-white">Empty</p>
+    return;
+}
+<table id="list" class="table table-hover vote-table">
+    <thead>
+        <tr>
+            <th class="text-white">
+                #
+            </th>
+            <th class="text-center text-white" colspan="2">
+                Title
+            </th>
+            <th class="text-center text-white">
+                Date
+            </th>
+            @if (Model.RequestInitiator != RequestInitiator.Owner)
+            {
+                <th class="text-center text-white">
+                    User vote
+                </th>
+            }
+            @if(Model.RequestInitiator == RequestInitiator.Owner || Model.RequestInitiator == RequestInitiator.Guest)
+            {
+                <th class="text-center text-white">
+                    Your vote
+                </th>
+            }
+            <th class="text-center text-white">
+                Lists
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    @for (var i = 0; i < Model.Movies.Results.Count; i++)
+    {
+        var movie = Model.Movies.Results[i];
+        <tr>
+            <td class="text-white">
+                @(i + 1)
+            </td>
+            <td>
+                <a asp-page="/Movie/Details" asp-route-id="@movie.Id">
+                    <poster path="@movie.PosterPath" style="width: 60px; object-fit: cover"></poster>
+                </a>
+            </td>
+            <td class="upcoming-title text-left text-white">
+                @movie.Title (@movie.ReleaseDate.Year)<br/>
+                <rating-in-percents value="@movie.Rating" class="@RatingColor.GetClass(movie.Rating, ColorType.Font)"></rating-in-percents> (@movie.VotesCount)
+            </td>
+            <td class="upcoming-date text-center text-main">
+                @movie.AddingDate.ToShortDateString()
+            </td>
+            @if (Model.RequestInitiator == RequestInitiator.Owner)
+            {
+                <td class="text-center">
+                    <partial name="User/UserRatingButton" model="new RatingButtonViewModel { Vote = movie.OwnerVote, IsActive = true}"/>
+                </td>
+            }
+            else
+            {
+                <td class="text-center">
+                    <partial name="User/UserRatingButton" model="new RatingButtonViewModel { Vote = movie.OwnerVote, IsActive = false }"/>
+                </td>
+            }
+            @if (Model.RequestInitiator == RequestInitiator.Guest)
+            {
+                <td class="text-center">
+                    <partial name="User/UserRatingButton" model="new RatingButtonViewModel { Vote = movie.GuestVote, IsActive = true }"/>
+                </td>
+            }
+            <td>
+                <button class="unfocused-button list-button" name="lists-toggle" id="lists" data-id="@movie.Id" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showListsDropdown(this, @movie.Id)">
+                    <span class="fa fa-list"></span>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="lists" style="padding-left: 10px; font-size: 14px;">
+
+                </div>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

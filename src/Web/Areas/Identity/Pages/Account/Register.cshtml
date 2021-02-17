@@ -1,0 +1,33 @@
+﻿@page "/account/register"
+@model Web.Areas.Identity.Pages.Account.RegisterModel
+@{
+}
+
+<div class="container">
+    <div style="margin-top: 70px">
+        <h2 class="text-white">Sign Up</h2>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <div class="text-white">
+                @Html.LabelFor(m => m.RegisterInput.Username)
+            </div>
+            @Html.EditorFor(m => m.RegisterInput.Username)
+            <div class="text-white">
+                @Html.LabelFor(m => m.RegisterInput.Email)
+            </div>
+            @Html.EditorFor(m => m.RegisterInput.Email)
+            <div class="text-white">
+                @Html.LabelFor(m => m.RegisterInput.Password)
+            </div>
+            @Html.EditorFor(m => m.RegisterInput.PasswordConfirm)
+            <div class="text-white">
+                @Html.LabelFor(m => m.RegisterInput.PasswordConfirm)
+            </div>
+            @Html.EditorFor(m => m.RegisterInput.Password)
+            <div style="margin-top: 10px;">
+                <input class="btn btn-danger" type="submit" value="Sign up"/>
+            </div>
+        }
+    </div>
+</div>

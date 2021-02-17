@@ -1,0 +1,44 @@
+﻿@using Web.Models.Search
+@using Web.Views
+@model SearchDropdownViewModel
+
+    <h6>Movies</h6>
+    @foreach (var movie in Model.SearchItems.Where(m => m.SearchCategory == SearchCategory.Movies))
+    {
+        <div class="search-row">
+            <a asp-page="/Movie/Details" asp-route-id="@movie.Id">
+                <div class="row">
+                    <div class="col-1">
+                        <poster path="@movie.ImagePath" class="search-poster"></poster>
+                    </div>
+                    <div class="col-9 text-left search-title">
+                        @movie.Name<br/>
+                        <span class="search-year">@movie.Year</span>
+                    </div>
+                    <div class="col text-center">
+                        @{
+                            var color = RatingColor.GetClass(movie.Rating.Value, ColorType.Font);
+                        }
+                        <span><b class="@color">@($"{movie.Rating:F1}")</b></span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+    <h6>People</h6>
+    @foreach (var person in Model.SearchItems.Where(m => m.SearchCategory == SearchCategory.People))
+    {
+        <div style="margin-bottom: 8px;">
+            <a asp-page="/Person/Details" asp-route-id="@person.Id">
+                <div class="row">
+                    <div class="col-1">
+                        <poster path="@person.ImagePath" class="search-poster"></poster>
+                    </div>
+                    <div class="col text-left search-title">
+                        @person.Name
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+    <a asp-page="/Search/Index" asp-route-query="@Model.Query">Show all results</a>

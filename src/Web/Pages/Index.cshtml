@@ -1,0 +1,132 @@
+﻿@page
+
+@model Web.Pages.IndexModel
+@{
+    ViewData["Title"] = "MoviesApp";
+    Layout = "_Layout";
+}
+
+<h2 class="home-title">Search & Discover</h2>
+<div class="search-input-block">
+    <div id="search-wrapper" aria-haspopup="true" aria-expanded="false" data-display="static">
+        <div class="input-group">
+            <input class="form-control" type="text" id="query-field" placeholder="Search" autocomplete="off"/>
+            <div class="input-group-append">
+                <button id="search-btn" class="btn btn-danger" onclick="search()">
+                    <i class="fa fa-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="query-dropdown" class="dropdown-menu search-dropdown w-100" aria-labelledby="search-wrapper">
+    </div>
+</div>
+<div class="genre-grid">
+    @foreach (var genre in Model.Genres)
+    {
+        <div class="genre-box">
+            <a href="#">
+                <div class="genre-item">
+                    <img src="@genre.ImagePath" alt="@genre.Name"/>
+                    <div class="genre-overlay"></div>
+                    <div class="genre-text">@genre.Name</div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+<h2 class="home-title">Popular now</h2>
+<div class="trending-section">
+    <div class="scrollable-container">
+        @foreach (var movie in Model.PopularMovies)
+        {
+            <div class="scrollable-item">
+                @await Html.PartialAsync("Movie/MovieCard", movie)
+            </div>
+        }
+    </div>
+</div>
+<h2 class="home-title">Upcoming</h2>
+<div class="upcoming-block">
+    <table class="table table-borderless">
+        <tbody>
+        @foreach (var movie in Model.UpcomingMovies)
+        {
+            <tr class="upcoming-row">
+                <td>
+                    <a asp-page="/Movie/Details" asp-route-id="@movie.Id">
+                        <poster path="@movie.PosterPath" class="img-fluid" style="width: 60px; height: auto"></poster>
+                    </a>
+                </td>
+                <td class="upcoming-title text-left text-white">
+                    @movie.Title
+                </td>
+                <td class="upcoming-date text-right text-main">
+                    @movie.ReleaseDate.ToShortDateString()
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <partial name="Scripts/FolderMenuScripts"/>
+    <partial name="Scripts/MovieRatingScripts"/>
+    <partial name="Scripts/MovieCardScripts"/>
+
+    <script type="text/javascript">   
+        const queryField = document.getElementById('query-field');
+        const dropdown = document.getElementById('query-dropdown');
+        const queryWrapper = document.getElementById('search-wrapper');
+
+        document.body.onclick =  function(){
+            if(dropdown.classList.contains('show')){
+                $('#search-wrapper').dropdown('hide');
+            }
+        }
+        
+        queryField.onclick = function(event){
+            if(queryField.value.length > 2){
+                $('#search-wrapper').dropdown('toggle');
+            }
+            event.stopPropagation();
+        }
+
+        let lastRequest;
+        queryField.oninput = function() {
+            if(queryField.value === ''){
+                $('#search-wrapper').dropdown('hide');
+            }
+            if (queryField.value.length > 2) {
+                const request = new XMLHttpRequest();
+                lastRequest = request;
+                request.open('GET', '@Url.Action("GetSearchDropdown", "Search")?query=' + getPreparedQuery());
+                request.addEventListener('readystatechange',
+                    function() {
+                        if (request.status === 200 && request.readyState === request.DONE) {
+                            if (request === lastRequest) {
+                                dropdown.innerHTML = '';
+                                dropdown.insertAdjacentHTML('beforeend', request.response);
+                                $('#search-wrapper').dropdown('toggle');
+                            }
+                        }
+                    });
+                request.send();
+            }
+
+        }
+        
+        function search(){
+            if(queryField.value.length < 2)
+                return;
+            
+            window.location.href = '@Url.Page("/Search/Index")?query=' + getPreparedQuery();
+        }
+        
+        function getPreparedQuery(){
+            return queryField.value.replace(/\s/g, "+").trim();
+        }
+
+    </script>
+}

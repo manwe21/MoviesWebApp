@@ -1,0 +1,213 @@
+﻿@page "/user/{username}/lists"
+@using Web.Models.Pagination
+@using Web.Models.User
+@using Web.Pages.User
+@model Web.Pages.User.FoldersModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.Username + " - Lists";
+}
+
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("User/UserNavMenu", Model.Username)
+
+        <div class="folders-panel">
+            <ul class="list-group">
+                @foreach (var folder in Model.OwnerFolders)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center" data-default="@folder.IsDefault" data-id="@folder.Id" style="background: none">
+                        @{
+                            var href = Url.PageLink("Folders", null, new {id = folder.Id});
+                            if (folder.Id == Model.CurrentFolder.Id)
+                            {
+                                <a class="text-main" href=@href>@folder.Name</a>
+                            }
+                            else
+                            {
+                                <a class="text-white" href=@href>@folder.Name</a>
+                            }
+                        }
+                        <span class="badge badge-danger badge-pill">@folder.MoviesCount</span>
+                    </li>
+                }
+            </ul>
+            @if (Model.RequestInitiator == RequestInitiator.Owner)
+            {
+                <div class="text-center" style="padding-bottom: 10px;">
+                    <button id="add-folder-btn" class="btn btn-danger" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>New List</span>
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="add-folder-btn">
+                        <input id="folder-name" type="text" placeholder="Enter folder`s name"/>
+                        <div style="padding-top: 10px;">
+                            <button id="create-folder" class="btn btn-danger">
+                                <span>Create</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="col-9">
+        <div id="main-content" style="padding: 10px;">
+            <div id="folder-details" data-id="@Model.CurrentFolder.Id">
+                <h4 class="text-white">@Model.CurrentFolder.Name</h4>
+                @if (Model.RequestInitiator == RequestInitiator.Owner && !Model.CurrentFolder.IsDefault)
+                {
+                    <button id="manage-btn" class="btn btn-outline-danger">
+                        <span>Manage</span>
+                        <span class="fa fa-caret-down"></span>
+                    </button>
+                    <div id="manage-block" class="hidden-panel">
+                        <ul>
+                            <li>
+                                <a class="text-light" href="#" id="rename-toggle">Rename</a>
+                            </li>
+                            <li id="rename-block" class="hidden-panel">
+                                <input type="text" id="new-name" placeholder="New name"/>
+                                <div style="padding-top: 10px;">
+                                    <button id="rename-btn" class="btn btn-danger">
+                                        <span>Rename</span>
+                                    </button>
+                                </div>
+                            </li>
+                            <li>
+                                <a class="text-light" id="remove-btn" href="#" type="button">Remove</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                <partial name="Pagination/PageSelector" model="@(new PageSelectorViewModel 
+                                                                  { 
+                                                                      CurrentPage = Model.Movies.PageNumber,
+                                                                      PagesCount = Model.Movies.PagesCount,
+                                                                      Url = n => Url.Page("Folders", null, new { page_n = n, id = Model.CurrentFolder.Id }) + "#list"
+                                                                  })"/>
+                <div id="movies-container" style="padding-top: 20px;">
+                    <partial name="User/UserMoviesTable" model="new UserMoviesTableViewModel { Movies = Model.Movies, RequestInitiator = Model.RequestInitiator }"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <partial name="Scripts/FolderMenuScripts"/>
+    <partial name="Scripts/MovieRatingScripts"/>
+    <partial name="Scripts/MovieTableScripts"/>
+
+    <script type="text/javascript">
+        document.getElementById('lists-link').classList.add('active');
+        
+        if ('@Model.RequestInitiator' === '@RequestInitiator.Owner') {
+            if ('@Model.CurrentFolder.IsDefault' === 'False') {
+                document.getElementById('rename-toggle').onclick = function() {
+                    document.getElementById('rename-block').classList.toggle('hidden-panel');
+                }
+    
+                document.getElementById('rename-btn').onclick = function() {
+                    const newName = document.getElementById('new-name').value.trim();
+                    if (newName === '') {
+                        alert('Name is empty');
+                        return;
+                    }
+                    const folderId = @Model.CurrentFolder.Id;
+    
+                    const request = new XMLHttpRequest();
+                    request.open('POST', '@Url.Action("Rename", "Folder")');
+                    request.addEventListener('readystatechange', function() {
+                        if (request.readyState === request.DONE) {
+                            if (request.status === 200) {
+                                const data = JSON.parse(request.responseText);
+                                const id = data.id;
+                                const name = data.name;
+                                document.getElementById('folder-details').children[0].innerText = name;
+                                const folders = document.getElementsByClassName('list-group')[0].children;
+                                for (let i = 0; i < folders.length; i++) {
+                                    if (folders[i].dataset.id === id) {
+                                        folders[i].children[0].innerText = name;
+                                    }
+                                }
+                            }
+                            else showFailMessagePopup('Something went wrong')
+                        }
+                    });
+                    request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                    request.send('newName=' + newName + '&folderId=' + folderId);
+                }
+    
+                document.getElementById('remove-btn').onclick = function() {
+                    const ans = confirm('Are you sure that you want to delete this folder?');
+                    if (ans) {
+                        const id = @Model.CurrentFolder.Id;
+                        const request = new XMLHttpRequest();
+                        request.open('POST', '@Url.Action("Delete", "Folder")');
+                        request.addEventListener('readystatechange',
+                            function() {
+                                if (request.readyState === request.DONE) {
+                                    if (request.status === 200) {
+                                        const folders = document.getElementsByClassName('list-group')[0].children;
+                                        for (let i = 0; i < folders.length; i++) {
+                                            if (folders[i].dataset.id === id) {
+                                                folders[i].remove();
+                                            }
+                                        }
+                                        showSuccessMessagePopup('Folder has been removed');
+                                    }
+                                    else showFailMessagePopup('Something went wrong');
+                                }
+                            });
+                        
+                        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                        request.send('folderId=' + id);
+                    }
+    
+                }
+    
+                document.getElementById('manage-btn').onclick = function() {
+                    document.getElementById('manage-block').classList.toggle('hidden-panel');
+                    this.children[1].classList.toggle('fa-caret-down');
+                    this.children[1].classList.toggle('fa-caret-up');
+                }
+            }
+
+            document.getElementById('create-folder').onclick = function() {
+                const name = document.getElementById('folder-name').value.trim();
+                if (name === '') {
+                    alert('Name is empty');
+                    return;
+                }
+                const request = new XMLHttpRequest();
+                request.open('POST', '@Url.Action("Create", "Folder")');
+                request.addEventListener('readystatechange',
+                    function() {
+                        if (request.readyState === request.DONE) {
+                            if (request.status === 200) {
+                                const data = JSON.parse(request.responseText);
+                                createFolder(data.id, data.name);
+                                showSuccessMessagePopup('Folder has been created');
+                            } 
+                            else showFailMessagePopup("Something went wrong");
+                            document.getElementById('folder-name').value = '';
+                        }
+                    });
+                request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                request.send('folderName=' + name);
+            }
+        }
+        
+        function createFolder(id, folderName) {
+            const folderItem = document.getElementsByClassName('list-group-item')[0].cloneNode(true);
+            folderItem.dataset.id = id.toString();
+            folderItem.children[0].innerText = folderName;
+            folderItem.children[0].href = '@Url.PageLink("Folders")?id=' + id;
+            folderItem.children[1].innerText = '0';
+            document.getElementsByClassName('list-group')[0].append(folderItem);
+        }
+
+    </script>
+}

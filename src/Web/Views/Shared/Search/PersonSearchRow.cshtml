@@ -1,0 +1,16 @@
+﻿@model Web.Models.SearchTable.BaseRowViewModel
+
+<div class="row search-table-row">
+    <div class="col-lg-1" style="max-height: 100px;  margin-right: 10px">
+        <a asp-page="/Person/Details" asp-route-id="@Model.Id">
+            <poster path="@Model.ImagePath" class="search-table-poster"></poster>
+        </a>
+    </div>
+    <div class="col text-left">
+        <div>
+            <a class="text-main" asp-page="/Person/Details" asp-route-id="@Model.Id">
+                @Model.Name
+            </a>
+        </div>
+    </div>
+</div>

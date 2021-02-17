@@ -1,0 +1,29 @@
+﻿@page "/search/{category}"
+@using Web.Models.Pagination
+@using Web.Models.SearchTable
+@model Web.Pages.Search.Result
+
+@{
+    Layout = "_Layout";
+}
+
+<h6 class="text-white">Query: <span class="text-main search-query">@Model.Query</span> (all results: @(Model.SearchResultItems.AllRows))</h6>
+<partial name="Pagination/PageSelector" model="@(new PageSelectorViewModel 
+                                               { 
+                                                   PagesCount = Model.SearchResultItems.PagesCount,
+                                                   CurrentPage = Model.SearchResultItems.PageNumber,
+                                                   Url = i => Url.Page("Result", null, new {category = Model.CategoryString, query = Model.Query, page_n = i}) 
+                                               })"/>
+
+@*Find a way to use polymorphism*@
+@foreach (var item in Model.SearchResultItems.Results)
+{
+    if (item is MovieRowViewModel mItem)
+    {
+        @await Html.PartialAsync("Search/MovieSearchRow", mItem)
+    }
+    else
+    {
+        @await Html.PartialAsync("Search/PersonSearchRow", item)
+    }
+}

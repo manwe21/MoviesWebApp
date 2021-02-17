@@ -1,0 +1,42 @@
+﻿@using Web.Views
+@model Web.Models.SearchTable.MovieRowViewModel
+
+<div class="row search-table-row">
+    <div class="col-lg-1 col-md-6" style="height: 100px;  margin-right: 10px">
+        <a asp-page="/Movie/Details" asp-route-id="@Model.Id">
+            <poster path="@Model.ImagePath" class="search-table-poster"></poster>
+        </a>
+    </div>
+    <div class="col text-left">
+        <div>
+            <a class="text-main" asp-page="/Movie/Details" asp-route-id="@Model.Id">
+                @Model.Name
+            </a>
+        </div>
+        <div class="popup-text">
+            @Model.Year
+        </div>
+        <div class="popup-text">
+            @{
+                string genres;
+                if (Model.Genres.Any())
+                {
+                    genres = "(" + Model.Genres.Aggregate((g, ng) => $"{g}, {ng}") + ")";
+                }
+                else
+                {
+                    genres = "";
+                }
+            }
+            @genres
+        </div>
+    </div>
+    <div class="col text-center">
+        @{
+            var color = RatingColor.GetClass(Model.Rating, ColorType.Font);
+        }
+        <span><b class="@color">@($"{Model.Rating:F1}")</b></span>
+    </div>
+</div>
+
+

@@ -1,0 +1,53 @@
+﻿<script type="text/javascript">
+    function handleWatchedClick(source, id) {
+        if (source.checked) {
+            markAsWatched(source, id,
+                function(source, status) {
+                    if (status === 200) {
+                        createVoteButtonSpan(source.closest('#rating-menu').children[0], 'add');
+                        showSuccessMessagePopup('Movie has been added to watched');
+                    }
+                    else showFailMessagePopup('Something went wrong');
+                });
+        } else {
+            unmarkAsWatched(source,
+                id,
+                function(source, status) {
+                    if (status === 200) {
+                        createVoteButtonSpan(source.closest('#rating-menu').children[0], 'remove');
+                        showSuccessMessagePopup('Movie has been removed from watched');
+                    }
+                    else showFailMessagePopup('Something went wrong');
+                });
+        }
+    }
+
+    function handleVoteClick(source, value, id) {
+        rateMovie(source, id, value, function(source, status) {
+            if (status === 200) {
+                createVoteButtonSpan(source.closest('#rating-menu').children[0], 'rate', source.value);
+                showSuccessMessagePopup('Your vote has been saved');
+            }
+            else showFailMessagePopup('Something went wrong'); 
+        });
+    }
+
+    function createVoteButtonSpan(button, type, value) {
+        const span = button.children[0];
+        span.remove();
+        const newSpan = document.createElement('span');
+        switch (type) {
+        case 'add':
+            newSpan.classList.add('fa-eye', 'fa');
+            break;
+        case 'remove':
+            newSpan.classList.add('fa-star-o', 'fa');
+            break;
+        case 'rate':
+            newSpan.innerText = value;
+            break;
+        }
+        button.appendChild(newSpan);
+    }
+
+</script>

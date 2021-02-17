@@ -1,0 +1,27 @@
+﻿@page "/account/login"
+@model Web.Areas.Identity.Pages.Account.LoginModel
+
+<div class="container" style="margin-top: 70px">
+    <h2 class="text-white">Login</h2>
+    <div>
+        @using (Html.BeginForm())
+        {
+            @Html.ValidationSummary()
+            <div class="text-white">
+                @Html.LabelFor(m => m.LoginInput.Name)
+            </div>
+            @Html.EditorFor(m => m.LoginInput.Name)
+            <div class="text-white">
+                @Html.LabelFor(m => m.LoginInput.Password)
+            </div>
+            @Html.EditorFor(m => m.LoginInput.Password)
+            <div class="text-white" style="margin: 5px;">
+                @Html.EditorFor(m => m.LoginInput.RememberMe)
+                @Html.LabelFor(m => m.LoginInput.RememberMe)
+            </div>
+            <div style="margin-top: 10px;">
+                <input class="btn btn-danger" type="submit" value="Login"/>
+            </div>
+        }
+    </div>
+</div>

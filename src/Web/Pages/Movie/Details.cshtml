@@ -1,0 +1,138 @@
+﻿@page "/movie/{id:int}"
+@using Web.Models.Movie
+@model Web.Pages.Movie.DetailsModel
+
+@{
+    ViewData["Title"] = Model.Movie.Title;
+    Layout = "_Layout";
+
+    var genres = String.Join(", ", Model.Movie.Genres);
+    var watched = false;
+    var vote = 0;
+    if (Model.Vote != null)
+    {
+        watched = Model.Vote.Watched;
+        vote = Model.Vote.Value ?? 0;
+    }
+}
+
+<div class="row">
+    <div class="col col-lg-3 col-sm-6">
+        <div class="details-image-block">
+            <div class="image-container">
+                <poster path="@Model.Movie.PosterPath" class="img-fluid"></poster>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <button class="unfocused-button list-button" id="rating-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-star"></i>
+                    </button>
+                    <div class="dropdown-menu text-center" id="rating-dropdown-menu" aria-labelledby="rating-toggle" style="width: 200px">
+                        @await Html.PartialAsync("Movie/RatingMenu", new RatingMenuViewModel {MaxRating = 10, MovieId = Model.Id, UserRating = vote})
+                    </div>
+                </div>
+                <div class="col-4">
+                    <button class="unfocused-button list-button" name="lists-toggle" data-watched="@(watched ? 1 : 0)" onclick="handleWatchedClick(this, @Model.Id)">
+                        @if (watched)
+                        {
+                            <i class="fa fa-eye-slash"></i>
+                        }
+                        else
+                        {
+                            <i class="fa fa-eye"></i>
+                        }
+                    </button>
+                </div>
+                <div class="col-4">
+                    <button class="unfocused-button list-button" name="lists-toggle" id="lists-toggle" data-id="1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showListsDropdown(this, @Model.Id)">
+                        <span class="fa fa-list"></span>
+                    </button>
+                    <div class="dropdown-menu folders-menu" aria-labelledby="lists-toggle">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <partial name="Movie/MovieRating" model="@(new RatingViewModel { Rating = Model.Movie.Rating, VotesCount = Model.Movie.VotesCount })"/>
+    </div>
+    <div class="col col-lg-9 col-sm-6" style="padding: 15px">
+        <h3 class="text-white"> @Model.Movie.Title</h3>
+        <p class="text-main">@Model.Movie.ReleaseDate.ToShortDateString()</p>
+        <p class="text-white">@genres</p>
+        <p class="title-overview">@Model.Movie.Overview</p>
+        <h6 class="text-white">
+            Director:
+            @foreach (var d in Model.Movie.Directors)
+            {
+                <a asp-page="/Person/Details" asp-route-id="@d.Id" class="text-main">@d.Name</a>
+            }
+        </h6>
+    </div>
+</div>
+<h1 class="text-white">
+    Actors
+</h1>
+<div class="trending-section">
+    <div class="scrollable-container">
+        @foreach (var actor in Model.TopCast)
+        {
+            <div class="scrollable-item">
+                <div class="title-card">
+                    <a asp-page="/Person/Details" asp-route-id="@actor.Id">
+                        <poster path="@actor.ImagePath"></poster>
+                        <div class="title-card-footer text-left">
+                            @actor.Name
+                            <p class="text-main">@actor.Character</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<div class="text-center">
+    <a asp-page="People" class="cast-link" asp-route-id="@Model.Id">
+        View all people
+        <i class="fa fa-arrow-right"></i>
+    </a>
+</div>
+
+@section Scripts{
+    <partial name="Scripts/MovieRatingScripts" />
+    <partial name="Scripts/FolderMenuScripts" />
+
+    <script type="text/javascript">
+        function handleVoteClick(source, value, id) {
+            rateMovie(source, id, value, function (source, status) {
+                if (status == 200) {
+                    
+                }
+            });
+        }
+
+        function handleWatchedClick(source, id) {
+            if (source.dataset.watched == '1') {
+                unmarkAsWatched(source, id,
+                    function(source, status) {
+                        if (status == 200) {
+                            const span = source.children[0];
+                            span.classList.remove('fa-eye-slash');
+                            span.classList.add('fa-eye');
+                            source.dataset.watched = '0';
+                        }
+
+                    });
+            } else {
+                markAsWatched(source, id,
+                    function (source, status) {
+                        if (status == 200) {
+                            const span = source.children[0];
+                            span.classList.add('fa-eye-slash');
+                            span.classList.remove('fa-eye');
+                            source.dataset.watched = '1';
+                        }
+                    });
+            }
+        }
+    </script>
+}

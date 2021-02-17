@@ -1,0 +1,147 @@
+﻿@page "/movies"
+@model Web.Pages.Movie.ListModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-3">
+        <div class="search-options">
+            <div class="list-group options-list">
+                <div class="list-group-item">
+                    <p>Order By</p>
+                    <select id="select-orderby" class="form-control">
+                        <option value="Rating.desc" selected>Rating (Descending)</option>
+                        <option value="Rating.asc">Rating (Ascending)</option>
+                        <option value="ReleaseDate.desc">Release Date (Descending)</option>
+                        <option value="ReleaseDate.asc">Release Date (Ascending)</option>
+                        <option value="Title.desc">A-Z (Descending)</option>
+                        <option value="Title.asc">A-Z (Ascending)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="list-group options-list" style="margin-top: 10px;">
+                <div class="filters-header">
+                    <div class="filters-title">
+                            Filters
+                        <div class="refresh-btn" onclick="reload()">
+                            Apply
+                        </div>
+                    </div>
+                </div>
+                <div class="list-group-item">
+                    Min rating
+                    <input id="minRating" type="text" class="form-control" value="0"/>
+                    Min votes
+                    <input id="minVotes" type="text" class="form-control" value="300"/>
+                </div>
+                <div class="list-group-item">
+                    Release Date
+                    <p>
+                        From
+                        <input id="dateFrom" type="date" class="form-control" value="1970-01-01"/>
+                        To
+                        <input id="dateTo" type="date" class="form-control"/>
+                    </p>
+                </div>
+                <div class="list-group-item">
+                    <h6>Genres</h6>
+                    <p>
+                        @await Component.InvokeAsync("GenreSelector")
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="movies-container" class="col-lg-9 col-md-9">
+
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="Scripts/FolderMenuScripts" />
+    <partial name="Scripts/MovieRatingScripts" />
+    <partial name="Scripts/MovieCardScripts" />
+
+    <script type="text/javascript">
+        var currentPage = 1;
+        $(document).ready(function() {
+            $('#genre-list li').on('click',
+                (function() {
+                    $(this).toggleClass('genre-default');
+                    $(this).toggleClass('genre-active');
+
+                }));
+            var stringDate = dateToString(new Date());
+            $('#dateTo').val(stringDate);
+            $('#movies-container').load("@Url.Action("GetMovies", "Movie")",
+                function() {
+                    $('#loadmore-btn').on('click',
+                        function() {
+                            loadMore();
+                        });
+                });
+        });
+
+        function getMoviesUrl() {
+            var genres = $('.genre-active').map((_, el) => el.value).get();
+            var path = "";
+            for (var i = 0; i < genres.length; i++) {
+                path += "Genres=" + genres[i] + "&";
+            }
+
+            path += "ratingFrom=" + $('#minRating').val();
+            path += "&votesCountFrom=" + $('#minVotes').val();
+            path += "&releaseDateFrom=" + $('#dateFrom').val();
+            path += "&releaseDateTo=" + $('#dateTo').val();
+
+            var orderBy = $('#select-orderby :selected').val();
+            path += "&orderBy=" + orderBy;
+
+            return "@Url.Action("GetMovies", "Movie")/" + currentPage + "?" + path;
+        }
+
+        function reload() {
+            currentPage = 1;
+            var url = getMoviesUrl();
+            $('#movies-container').load(url,
+                function() {
+                    $('#loadmore-btn').on('click',
+                        function() {
+                            loadMore();
+                        });
+                });
+        }
+
+        function dateToString(date) {
+            var month = date.getMonth() + 1;
+            return date.getFullYear() +
+                "-" +
+                (month < 10 ? "0" : "") +
+                month +
+                "-" +
+                (date.getDate() < 10 ? "0" : "") +
+                date.getDate();
+        }
+
+        function loadMore() {
+            currentPage++;
+            var parent = $('#movies-container');
+            $.ajax({
+                type: "GET",
+                url: getMoviesUrl(),
+                success: function(text) {
+                    $('#loadmore-btn').remove();
+                    parent.append(text);
+                    $('#loadmore-btn').on('click',
+                        function() {
+                            loadMore();
+                        });
+                }
+            });
+        }
+
+    </script>
+}

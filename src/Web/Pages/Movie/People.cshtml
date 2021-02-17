@@ -1,0 +1,53 @@
+﻿@page "/movie/{id:int}/people"
+@model Web.Pages.Movie.PeopleModel
+
+@{
+    ViewData["Title"] = Model.Title + " - Cast";
+    Layout = "_Layout";
+}
+
+<a asp-page="Details" asp-route-id="@Model.Id" class="details-title">
+    @Model.Title
+</a>
+<div style="padding-top: 20px;">
+    <div class="row">
+        <div class="col-12 col-lg-6 col-sm-12 col-md-12">
+            <h6 class="text-white">Cast (@Model.Cast.Count)</h6>
+            @foreach (var role in Model.Cast)
+            {
+                <div class="row">
+                    <div class="col-3">
+                        <a asp-page="/Person/Details" asp-route-id="@role.Id">
+                            <poster path="@role.ImagePath" class="person-poster"></poster>
+                        </a>
+                    </div>
+                    <div class="col-9 text-left text-main cast-info">
+                        @role.Name
+                        <div class="text-white">
+                            @role.Position
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="col-12 col-lg-6 col-sm-12 col-md-12">
+            <h6 class="text-white">Crew (@Model.Crew.Count)</h6>
+            @foreach (var emp in Model.Crew)
+            {
+                <div class="row">
+                    <div class="col-3">
+                        <a asp-page="/Person/Details" asp-route-id="@emp.Id">
+                            <poster path="@emp.ImagePath" class="person-poster"></poster>
+                        </a>
+                    </div>
+                    <div class="col-9 text-left text-main" style="margin-top: 20px;">
+                        @emp.Name
+                        <div class="text-white">
+                            @emp.Position
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿@model Web.Models.Movie.RatingMenuViewModel
+
+@for (var i = 1; i <= Model.MaxRating; i++)
+{
+    <div class="radio-group">
+        <label>@i</label>
+        @if(i == Model.UserRating)
+        {
+            <input type="radio" name="rating-@Model.MovieId" value="@i" onclick="handleVoteClick(this, @i, @Model.MovieId)" checked>
+        }
+        else
+        {
+            <input type="radio" name="rating-@Model.MovieId" value="@i" onclick="handleVoteClick(this, @i, @Model.MovieId)"/>
+        }
+    </div>
+}

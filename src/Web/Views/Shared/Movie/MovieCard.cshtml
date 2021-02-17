@@ -1,0 +1,39 @@
+﻿@using Web.Views
+@model Web.Models.Movie.MovieCardViewModel
+
+@{
+    string colorClass = RatingColor.GetClass(Model.Rating, ColorType.Background);
+}
+
+<div class="title-card" data-movieId="@Model.Id">
+    <div class="title-card-body">
+        <poster path="@Model.PosterPath"></poster>
+        <div class="card-rating @colorClass">
+            <rating-in-percents value="@Model.Rating"></rating-in-percents>
+        </div>
+        <div class="card-control-panel">
+            <div class="dropdown show">
+                <a href="#" role="button" class="text-main control-element dropdown-toggle" id="rating-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showVoteDropdownMenu(this, @Model.Id)">
+                    <i class="fa fa-star"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" id="rating-dropdown-menu" aria-labelledby="rating-dropdown">
+
+                </div>
+            </div>
+            <div class="dropdown show">
+                <a href="#" role="button" name="lists-toggle" class="text-main control-element dropdown-toggle" id="lists" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="showListsDropdown(this, @Model.Id)">
+                    <i class="fa fa-list"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right folders-menu" aria-labelledby="lists">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="title-card-footer text-left">
+        <a class="text-white" asp-page="/Movie/Details" asp-route-id="@Model.Id">
+            @Model.Title
+            <p class="text-main">@Model.ReleaseDate.ToShortDateString()</p>
+        </a>
+    </div>
+</div>

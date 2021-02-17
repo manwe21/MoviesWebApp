@@ -1,0 +1,70 @@
+﻿<script type="text/javascript">
+    function rateMovie(source, movieId, rating, done) {
+        const request = new XMLHttpRequest();
+        request.open('POST', '@Url.Action("RateMovie", "Vote")');
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState === request.DONE) {
+                if(request.status === 401){
+                    window.location.href = '@Url.Page("/Account/Login", new { area = "Identity" })'
+                }
+                if(done != null)
+                    done(source, request.status);
+            }
+        });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("movieId=" + movieId + "&value=" + rating); 
+    }
+
+    function markAsWatched(source, movieId, done) {
+        const request = new XMLHttpRequest();
+        request.open('POST', '@Url.Action("AddMovieToWatched", "Vote")');
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState === request.DONE) {
+                if(request.status === 401){
+                    window.location.href = '@Url.Page("/Account/Login", new { area = "Identity" })'
+                }
+                if(done != null)
+                    done(source, request.status);
+            }
+        });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("movieId=" + movieId);
+    }
+
+    function unmarkAsWatched(source, movieId, done) {
+        const request = new XMLHttpRequest();
+        request.open('POST', '@Url.Action("RemoveMovieFromWatched", "Vote")');
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState === request.DONE) {
+                if(request.status === 401){
+                    window.location.href = '@Url.Page("/Account/Login", new { area = "Identity" })'
+                }
+                if(done != null)
+                    done(source, request.status);
+            }   
+        });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("movieId=" + movieId);
+    }
+            
+    function showVoteDropdownMenu(toggle, id) {
+        const dropdown = toggle.parentElement.children[1];
+        dropdown.innerHTML = '';
+        const request = new XMLHttpRequest();
+        request.open('GET', '@Url.Action("GetVoteMenu", "Vote")?movieId=' + id);
+        request.addEventListener('readystatechange',
+            function() {
+                if(request.readyState === request.DONE) {
+                    if(request.status === 200){
+                        dropdown.innerHTML = request.responseText;
+                    }
+                    if(request.status === 401){
+                        window.location.href = '@Url.Page("/Account/Login", new { area = "Identity" })'
+                    }
+                }
+            });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send();
+    }
+
+</script>

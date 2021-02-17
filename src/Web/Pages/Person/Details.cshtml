@@ -1,0 +1,69 @@
+﻿@page "/person/{id}"
+@model Web.Pages.Person.PersonModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.Person.Name;
+}
+
+<div class="row">
+    <div class="col-lg-3">
+        <div class="image-container details-image-block">
+            <poster path="@Model.Person.ImagePath" class="img-fluid"></poster>
+        </div>
+    </div>
+    <div class="col-lg-9">
+        <div style="padding-top: 30px;">
+            <h3 class="text-white">@Model.Person.Name</h3>
+            <h4 class="text-white">Known for:</h4>
+            <div class="scrollable-container">
+                @foreach (var movie in Model.FamousMovies)
+                {
+                    <div class="scrollable-item">
+                        @await Html.PartialAsync("Movie/MovieCard", movie)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<h4 class="text-white">Filmography</h4>
+
+@foreach (var block in Model.Filmography)
+{
+    <h5 class="text-white">@block.Department</h5>
+    <table class="filmography-table">
+        <tbody>
+        @foreach (var year in block.Items)
+        {
+            <tr>
+                <td>
+                    <table class="department-table">
+                        <tbody>
+                        @foreach (var job in year.Value)
+                        {
+                            <tr>
+                                <td class="filmography-year">@year.Key</td>
+                                <td>
+                                    <div class="filmography-title">
+                                        <a asp-page="/Movie/Details" asp-route-id="@job.MovieId">@job.Title</a>
+                                    </div>
+                                    <i class="filmography-job">@string.Join(", ", job.PersonPositions)</i>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+@section Scripts{
+    <partial name="Scripts/FolderMenuScripts" />
+    <partial name="Scripts/MovieRatingScripts" />
+    <partial name="Scripts/MovieCardScripts" />
+}

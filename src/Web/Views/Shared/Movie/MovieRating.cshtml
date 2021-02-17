@@ -1,0 +1,21 @@
+﻿@using Web.Views
+@model Web.Models.Movie.RatingViewModel
+@{
+    Layout = null;
+
+    string rating = $"{Model.Rating:F1}";
+    string votes = $"{Model.VotesCount:##,###}";
+
+    string colorClass = RatingColor.GetClass(Model.Rating, ColorType.Background);
+
+}
+
+<div class="text-white text-center">
+    <div class="rating-block @colorClass">
+        @rating
+    </div>
+    <span style="font-size: 14px;">
+        <i class="fa fa-user"></i>
+        @votes total
+    </span>
+</div>

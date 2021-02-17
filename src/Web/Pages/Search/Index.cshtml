@@ -1,0 +1,40 @@
+﻿@page "/search"
+@model Web.Pages.Search.Index
+
+@{
+    Layout = "_Layout";
+}
+
+
+<h6 class="text-white">Query: <span class="text-main search-query">@Model.Query</span> (all results: @(Model.Movies.AllRows + Model.People.AllRows))</h6>
+@if (Model.Movies.AllRows + Model.People.AllRows == 0)
+{
+    <h5 class="text-white">Nothing found</h5>
+}
+@if (Model.Movies.AllRows != 0)
+{
+    <div class="search-table">
+        <h4 class="text-white">Movies (@Model.Movies.AllRows)</h4>
+        @foreach (var movie in Model.Movies.Results)
+        {
+            @await Html.PartialAsync("Search/MovieSearchRow", movie)
+        }
+        <a asp-page="Result" asp-route-category="movies" asp-route-query="@Model.Query" class="btn btn-danger">
+            <span>Show all (@Model.Movies.AllRows)</span>
+        </a>
+    </div>
+}
+
+@if (Model.People.AllRows != 0)
+{
+    <div class="search-table">
+        <h4 class="text-white">People (@Model.People.AllRows)</h4>
+        @foreach (var person in Model.People.Results)
+        {
+            @await Html.PartialAsync("Search/PersonSearchRow", person)
+        }
+        <a asp-page="Result" asp-route-category="people" asp-route-query="@Model.Query" class="btn btn-danger">
+            <span>Show all (@Model.People.AllRows)</span>
+        </a>
+    </div>
+}

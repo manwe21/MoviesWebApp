@@ -1,0 +1,9 @@
+﻿@model List<Core.Application.Dto.GenreDto>
+
+<ul id="genre-list">
+    @foreach (var genre in Model)
+    {
+        <li class="genre-button genre-default" value="@genre.Id">@genre.Name</li>
+    }
+</ul>
+

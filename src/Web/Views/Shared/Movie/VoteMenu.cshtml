@@ -1,0 +1,20 @@
+﻿@model Core.Application.Dto.VoteDto
+@using Web.Models.Movie
+
+<div style="font-size: 14px; width: 200px; padding-left: 10px;">
+    @if (Model.Watched)
+    {
+        <input type="checkbox" name="watched" id="watched" data-id="@Model.MovieId" onclick="handleWatchedClick(this, @Model.MovieId)" checked>
+    }
+    else
+    {
+        <input type="checkbox" name="watched" id="watched" data-id="@Model.MovieId" onclick="handleWatchedClick(this, @Model.MovieId)">
+    }
+    <label for="watched">Watched</label>
+    @{
+        var vote = Model.Value ?? 0;
+    }
+    <div>
+        @await Html.PartialAsync("Movie/RatingMenu", new RatingMenuViewModel {MovieId = Model.MovieId, MaxRating = 10, UserRating = vote })
+    </div>
+</div>

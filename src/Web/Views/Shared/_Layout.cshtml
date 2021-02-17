@@ -1,0 +1,71 @@
+﻿@{
+    bool loggedIn = User.Identity.IsAuthenticated;
+    
+}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width"/>
+        <title>@ViewBag.Title</title>
+        <link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+        <link href="~/css/style.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-top">
+            <a class="navbar-brand" asp-page="/Index">
+                <i class="fa fa-film"></i>
+                MoviesApp
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-main" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbar-main">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item dropdown">
+                        <a asp-page="/Movie/List" class="nav-link" id="movies-drop" role="button">Movies</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="tv-drop" role="button">TV Shows</a>
+                    </li>
+                </ul>
+                <ul class=" nav navbar-nav nav-flex-icons ml-auto">
+                    @if (!loggedIn)
+                    {
+                        <li class="nav-item">
+                            <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path" class="nav-link">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Context.Request.Path" class="nav-link">Sign in</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#" id="account-drop" role="button" data-toggle="dropdown">
+                                <i class="fa fa-user-circle"></i>
+                                @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown">
+                                <a asp-page="/User/Profile" asp-route-username="@User.Identity.Name" class="dropdown-item">Profile</a>
+                                <a asp-page="/User/Movies" asp-route-username="@User.Identity.Name" class="dropdown-item">Movies</a>
+                                <a asp-page="/User/Folders" asp-route-username="@User.Identity.Name" class="dropdown-item">Lists</a>
+                                <div class="dropdown-divider"></div>
+                                <a asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Context.Request.Path" class="dropdown-item">Log out</a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+        <div class="container main-container">
+            @RenderBody()
+        </div>
+        <script src="~/lib/jquery/dist/jquery.min.js" type="text/javascript"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" type="text/javascript"></script>
+        <script src="~/scripts/popup.js" type="text/javascript"></script>
+        <script src="~/lib/Chart.js/Chart.js" type="text/javascript"></script>
+        @await RenderSectionAsync("Scripts", false)
+    </body>
+</html>

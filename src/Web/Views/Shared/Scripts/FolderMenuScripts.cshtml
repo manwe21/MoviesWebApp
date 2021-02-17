@@ -1,0 +1,110 @@
+﻿<script type="text/javascript">
+    function showListsDropdown(toggle, id) {
+        const dropdown = toggle.parentElement.children[1];
+        if (dropdown.classList.contains('show'))
+            return;
+
+        const request = new XMLHttpRequest();
+        request.open('GET', '@Url.Action("GetFoldersDataForMovie", "Folder")?movieId=' + id);
+        request.addEventListener('readystatechange', function() {
+            if(request.readyState === request.DONE){
+                if (request.status === 200) {
+                    let data = JSON.parse(request.responseText);
+                    let lists = data.lists;
+                    let listsWithMovie = data.listsWithMovie;
+                    createListsDropdownContent(dropdown, id, lists, listsWithMovie);
+                }
+                else if(request.status === 401){
+                    window.location.href = '@Url.Page("/Account/Login", new {area = "Identity"})';
+                }
+            }
+        });
+        request.send();
+    }
+
+    function addOnClickEventToListCheckbox(checkbox) {
+        checkbox.onclick = function() {
+            if (checkbox.checked) {
+                addMovieToFolder(this.dataset.movie, checkbox.value);
+            } else {
+                removeMovieFromFolder(this.dataset.movie, checkbox.value);
+            }
+        }
+    }
+
+    function removeMovieFromFolder(movieId, folderId) {
+        const request = new XMLHttpRequest();
+        request.open('POST', '@Url.Action("RemoveMovie", "Folder")');
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState === request.DONE) {
+                if(request.status === 200){
+                    showSuccessMessagePopup('Movie has been removed from folder');
+                } else{
+                    showFailMessagePopup('Something went wrong');
+                }
+            }
+            
+        });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("folderId=" + folderId + "&movieId=" + movieId);
+    }
+
+    function addMovieToFolder(movieId, folderId) {
+        const request = new XMLHttpRequest();
+        request.open('POST', '@Url.Action("AddMovie", "Folder")');
+        request.addEventListener('readystatechange', function() {
+            if (request.readyState === request.DONE) {
+                if(request.status === 200){
+                    showSuccessMessagePopup('Movie has been added to folder');
+                } else{
+                    showFailMessagePopup('Something went wrong');
+                }
+                
+            }
+        });
+        request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        request.send("folderId=" + folderId + "&movieId=" + movieId);
+    }
+
+    function createListCheckboxGroup(lists, movieId, checked) {
+        let group = document.createElement('div');
+        for (let i = 0; i < lists.length; i++) {
+            let div = document.createElement('div');
+
+            let checkbox = document.createElement('input');
+            checkbox.setAttribute('type', 'checkbox');
+            checkbox.setAttribute('name', 'folder-check');
+            checkbox.setAttribute('value', lists[i].id);
+            checkbox.setAttribute('data-movie', movieId);
+            if (checked.includes(lists[i].id))
+                checkbox.setAttribute('checked', '');
+            addOnClickEventToListCheckbox(checkbox);
+
+            let label = document.createElement('label');
+            label.innerText = lists[i].name;
+            label.style.paddingLeft = '5px';
+
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            group.appendChild(div);
+        }
+        return group;
+    }
+
+    function createListsDropdownContent(dropdown, movieId, lists, listsWithMovie) {
+        let defaultLists = lists.filter(l => l.isDefault);
+        let notDefaultLists = lists.filter(l => !l.isDefault);
+        dropdown.innerHTML = '';
+        let div = createListCheckboxGroup(defaultLists, movieId, listsWithMovie);
+        dropdown.appendChild(div);
+
+        let separator = document.createElement('div');
+        separator.classList.add('dropdown-divider');
+        dropdown.appendChild(separator);
+
+        div = createListCheckboxGroup(notDefaultLists, movieId, listsWithMovie);
+        dropdown.appendChild(div);
+    }
+
+</script>
+

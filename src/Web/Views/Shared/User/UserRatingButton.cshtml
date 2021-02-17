@@ -1,0 +1,52 @@
+﻿@using Core.Application.Dto
+@model Web.Models.Movie.RatingButtonViewModel
+
+@if (Model.IsActive)
+{
+    <div id="rating-menu">
+        <button class="unfocused-button rating-button" id="rating-dropdown" data-id="@Model.Vote.MovieId" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            @if (Model.Vote.Watched)
+            {
+                if (Model.Vote.Value.HasValue)
+                {
+                    <span>@Model.Vote.Value</span>
+                }
+                else
+                {
+                    <span class="fa fa-eye"></span>
+                }
+            }
+            else
+            {
+                <span class="fa fa-star-o"></span>
+            }
+        </button>
+        <div class="dropdown-menu" id="rating-dropdown-menu1" aria-labelledby="rating-dropdown" style="font-size: 14px; width: 200px; padding-left: 10px;">
+            @{
+                var vote = Model.Vote.Value ?? 0;
+            }
+            @await Html.PartialAsync("Movie/VoteMenu", new VoteDto { MovieId = Model.Vote.MovieId, Watched = Model.Vote.Watched, Value = vote })
+        </div>
+    </div>
+}
+else
+{
+    <button class="unfocused-button rating-button text-center text-white" style="border: 1px solid #ffffff" disabled>
+        @if (Model.Vote.Watched)
+        {
+            if (Model.Vote.Value.HasValue)
+            {
+                <span>@Model.Vote.Value</span>
+            }
+            else
+            {
+                <span class="fa fa-eye"></span>
+            }
+        }
+        else
+        {
+            <span class="fa fa-star-o"></span>
+        }
+    </button>
+}
+

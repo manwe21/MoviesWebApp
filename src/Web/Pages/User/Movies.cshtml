@@ -1,0 +1,242 @@
+﻿@page "/user/{username}/movies"
+@using Web.Models.Movie
+@using Web.Models.Pagination
+@using Web.Models.User
+@using Web.Pages.User
+@model Web.Pages.User.MoviesModel
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = Model.Username + " - Movies";
+}
+
+<div class="row">
+    <div class="col-3">
+        @await Html.PartialAsync("User/UserNavMenu", Model.Username)
+    </div>
+    <div class="col-9">
+        <div id="main-content" style="padding: 10px;">
+            <div>
+                <button class="turnOn-button" data-target="genres-info">
+                    <span class="fa fa-minus-square-o"></span>
+                </button>
+                <span class="turnOn-name">Genres</span>
+                <div id="genres-info">
+                    <canvas id="genres"></canvas>
+                </div>
+            </div>
+            <div>
+                <button class="turnOn-button" type="button" data-target="years-info">
+                    <span class="fa fa-minus-square-o"></span>
+                </button>
+                <span class="turnOn-name">Years</span>
+            </div>
+            <div id="years-info">
+                <canvas id="years"></canvas>
+            </div>
+            <div>
+                <button class="turnOn-button" type="button" data-target="actors-info">
+                    <span class="fa fa-minus-square-o"></span>
+                </button>
+                <span class="turnOn-name">Actors</span>
+            </div>
+            <div id="actors-info" class="actors-block">
+                <div class="scrollable-container">
+                    @foreach (var actor in Model.Actors)
+                    {
+                        <div class="actor-item">
+                            <a asp-page="/Person/Details" asp-route-id="@actor.Id">
+                                <poster path="@actor.ImagePath" height="100"></poster>
+                            </a>
+                            <div class="text-center user-actor-stats">
+                                <span class="text-white">@actor.MoviesCount, </span><span class="text-main">@($"{actor.AverageRating:F1}")</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div>
+                <button class="turnOn-button" type="button" data-target="votes-section">
+                    <span class="fa fa-minus-square-o"></span>
+                </button>
+                <span class="turnOn-name">Ratings and Views</span>
+            </div>
+            <div id="votes-section">
+                @if (Model.RequestInitiator == RequestInitiator.Guest)
+                {
+                    <div class="text-right">
+                        <h5 class="text-white">Votes similarity</h5>
+                        @if (Model.IsVotesNotEnough)
+                        {
+                            <h6 class="text-white">You need min 20 mutual votes to calculate similarity percent</h6>
+                        }
+                        else
+                        {
+                            <h4 class="text-main">@Model.VotesSimilarity%</h4>
+                        }
+                    </div>
+                }
+                <partial name="Pagination/PageSelector" model="@(new PageSelectorViewModel 
+                                                                  { 
+                                                                      CurrentPage = Model.Movies.PageNumber,
+                                                                      PagesCount = Model.Movies.PagesCount,
+                                                                      Url = n => Url.Page("Movies", null, new { page_n = n }) + "#list"
+                                                                  })"/>
+                <div id="movies-container" class="ratings-block">
+                    <partial name="User/UserMoviesTable" model="new UserMoviesTableViewModel{RequestInitiator = Model.RequestInitiator, Movies = Model.Movies}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <partial name="Scripts/FolderMenuScripts"/>
+    <partial name="Scripts/MovieRatingScripts"/>
+    <partial name="Scripts/MovieTableScripts"/>
+    
+    <script type="text/javascript">
+        document.getElementById('movies-link').classList.add('active');
+        const genresRequest = new XMLHttpRequest();
+        genresRequest.open('GET', '@Url.Action("GetGenres", "User", new {Username = Model.Username})');
+        genresRequest.addEventListener('readystatechange',
+            function() {
+                if (genresRequest.readyState === genresRequest.DONE && genresRequest.status === 200) {
+                    const genres = JSON.parse(genresRequest.responseText);
+                    drawGenresChart(genres);
+                }
+
+            });
+        genresRequest.send();
+
+        const yearsRequest = new XMLHttpRequest();
+        yearsRequest.open('GET', '@Url.Action("GetYears", "User", new {Username = Model.Username})');
+        yearsRequest.addEventListener('readystatechange',
+            function() {
+                if (yearsRequest.readyState === yearsRequest.DONE && yearsRequest.status === 200) {
+                    const years = JSON.parse(yearsRequest.responseText);
+                    drawYearsChart(years);
+                }
+
+            });
+        yearsRequest.send();
+       
+        function drawGenresChart(data) {
+            const genresCanvas = document.getElementById("genres");
+            const names = [];
+            const x = [];
+            for (let i = 0; i < data.length; i++) {
+                names.push(data[i].name + " (" + data[i].count + ")");
+                x.push(data[i].averageRating);
+            }
+
+            const ratingDataset = {
+                label: 'Rating',
+                data: x,
+                backgroundColor: 'rgba(219, 52, 71, 0.5)',
+                borderColor: 'rgba(219, 52, 71, 1)',
+                borderWidth: 2,
+                hoverBorderWidth: 0
+            };
+
+            const genresChart = new Chart(genresCanvas,
+                {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: names,
+                        datasets: [ratingDataset]
+                    },
+                    options: {
+                        legend: { display: false },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    min: 0,
+                                    max: 10,
+                                    stepSize: 2
+                                }
+
+                            }
+                        }
+                    }
+                });
+
+        }
+
+        function drawYearsChart(data) {
+            const yearsCanvas = document.getElementById('years');
+
+            let count = [];
+            let years = [];
+            for (let i = 0; i < data.length; i++) {
+                count.push(data[i].count);
+                years.push(data[i].year);
+            }
+
+            let y = [];
+            let x = [];
+            for (let i = 1970; i <= 2020; i++) {
+                let index = -1;
+                for (let j = 0; j < years.length; j++) {
+                    if (years[j] === i) {
+                        index = j;
+                        break;
+                    }
+                }
+                x.push(i);
+                if (index === -1)
+                    y.push(0);
+                else y.push(count[index]);
+            }
+
+            const yearsDataset = {
+                label: 'Count',
+                data: y,
+                backgroundColor: 'rgba(219, 52, 71, 0.5)',
+                borderColor: 'rgba(219, 52, 71, 1)',
+                borderWidth: 1,
+                hoverBorderWidth: 0
+            };
+
+            const yearsChart = new Chart(yearsCanvas,
+                {
+                    type: 'bar',
+                    data: {
+                        labels: x,
+                        datasets: [yearsDataset]
+                    },
+                    options: {
+                        legend: { display: false },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    min: 1970,
+                                    max: 2020,
+                                    stepSize: 2
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    min: 0,
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+        }
+
+        const turnButtons = document.getElementsByClassName('turnOn-button');
+        for (let i = 0; i < turnButtons.length; i++) {
+            turnButtons[i].onclick = function() {
+                const span = this.children[0];
+                span.classList.toggle('fa-plus-square-o');
+                span.classList.toggle('fa-minus-square-o');
+                const panelId = this.dataset.target;
+                const panel = document.getElementById(panelId);
+                panel.classList.toggle('hidden-panel');
+            }
+        }
+
+    </script>
+}
