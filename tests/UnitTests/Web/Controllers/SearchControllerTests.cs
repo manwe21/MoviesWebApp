@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Application.Dto;
-using Core.Application.Services.Search;
+using Application.Data.QueryExtensions.Pagination;
+using Application.Dto;
+using Application.Services.Search;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;

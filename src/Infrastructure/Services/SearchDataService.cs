@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Core.Application;
-using Core.Application.Data;
-using Core.Domain.Entities;
+using Application;
+using Application.Data;
+using Domain.Entities;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

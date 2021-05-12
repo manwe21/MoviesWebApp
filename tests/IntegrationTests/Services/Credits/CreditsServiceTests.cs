@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Core.Application.Services.Credits;
+using Application.Services.Credits;
 using Xunit;
 
 namespace IntegrationTests.Services.Credits

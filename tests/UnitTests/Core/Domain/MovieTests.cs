@@ -1,4 +1,4 @@
-﻿using Core.Domain.Entities;
+﻿using Domain.Entities;
 using Xunit;
 
 namespace UnitTests.Core.Domain

@@ -1,4 +1,4 @@
-﻿using Core.Application.Dto;
+﻿using Application.Dto;
 
 namespace Web.Models.Movie
 {

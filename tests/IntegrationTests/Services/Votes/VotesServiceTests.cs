@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Core.Application.Exceptions;
-using Core.Application.Exceptions.HttpExceptions;
-using Core.Application.Services.Folders;
-using Core.Application.Services.Votes;
+using Application.Exceptions;
+using Application.Exceptions.HttpExceptions;
+using Application.Services.Votes;
 using Xunit;
 
 namespace IntegrationTests.Services.Votes

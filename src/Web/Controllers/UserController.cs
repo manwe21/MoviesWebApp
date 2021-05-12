@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Core.Application.Services.User;
+using Application.Services.User;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

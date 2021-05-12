@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Core.Application;
-using Core.Application.Data;
-using Core.Application.Events;
+using Application;
+using Application.Data;
+using Application.Events;
 using Infrastructure.Api;
 using Infrastructure.Data;
 using Infrastructure.Identity;

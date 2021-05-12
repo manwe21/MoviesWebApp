@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Dto;
+using Application.Services.Folders;
 using AutoMapper;
-using Core.Application.Dto;
-using Core.Application.Services.Folders;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

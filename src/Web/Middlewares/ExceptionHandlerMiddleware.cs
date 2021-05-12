@@ -1,5 +1,4 @@
-﻿using Core.Application.Exceptions;
-using Core.Application.Exceptions.HttpExceptions;
+﻿using Application.Exceptions.HttpExceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;

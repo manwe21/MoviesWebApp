@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30011.22
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "src\Core\Core.csproj", "{0FC5A7E8-4349-4A27-9024-278EA95845AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "src\Application\Application.csproj", "{0FC5A7E8-4349-4A27-9024-278EA95845AF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "src\Infrastructure\Infrastructure.csproj", "{6E1F9A9B-0B6C-44F7-B06E-788D0FC67072}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EDE8D4F3-87E1-41C2-A0C6-38C35B5CE24B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "tests\IntegrationTests\IntegrationTests.csproj", "{3F2DA079-A49A-4B36-8BDB-BEA7FFF86E37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "src\Domain\Domain.csproj", "{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{3F2DA079-A49A-4B36-8BDB-BEA7FFF86E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F2DA079-A49A-4B36-8BDB-BEA7FFF86E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F2DA079-A49A-4B36-8BDB-BEA7FFF86E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -56,5 +62,6 @@ Global
 		{B2A7519B-27E2-4540-A57B-76440912E203} = {F56A6D60-5879-4044-A7C7-E2280FAD5396}
 		{7CBC9F9C-9E52-450A-B29E-705FD495EB4A} = {EDE8D4F3-87E1-41C2-A0C6-38C35B5CE24B}
 		{3F2DA079-A49A-4B36-8BDB-BEA7FFF86E37} = {EDE8D4F3-87E1-41C2-A0C6-38C35B5CE24B}
+		{A51D234A-F3F5-44A8-A7F0-10B1E797F6C8} = {F56A6D60-5879-4044-A7C7-E2280FAD5396}
 	EndGlobalSection
 EndGlobal

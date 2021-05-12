@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Core.Application.Data.QueryExtensions.Pagination;
+using Application.Data.QueryExtensions.Pagination;
 using Xunit;
 
 namespace IntegrationTests.DataQueries

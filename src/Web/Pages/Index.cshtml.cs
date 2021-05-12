@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Services.Genre;
+using Application.Services.Movie;
+using Application.Services.Popularity;
 using AutoMapper;
-using Core.Application.Services.Genre;
-using Core.Application.Services.Movie;
-using Core.Application.Services.Popularity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Models.Genre;

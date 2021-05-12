@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Core.Application.Dto;
 
 namespace Web.Models.Person
 {

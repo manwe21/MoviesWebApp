@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Dto;
+using Application.Services.Search;
 using AutoMapper;
-using Core.Application.Dto;
-using Core.Application.Services.Search;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Web.Models.Search;

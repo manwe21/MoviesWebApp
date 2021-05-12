@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Core.Application.Data.QueryExtensions.Movies;
+using Application.Data.QueryExtensions.Movies;
 using Infrastructure.Data;
 using Xunit;
 

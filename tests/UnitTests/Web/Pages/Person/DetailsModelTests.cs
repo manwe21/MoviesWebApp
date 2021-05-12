@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
-using Core.Application.Services.Credits;
-using Core.Application.Services.Movie;
-using Core.Application.Services.People;
+using Application.Services.Credits;
+using Application.Services.Movie;
+using Application.Services.People;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Web.Pages.Person;

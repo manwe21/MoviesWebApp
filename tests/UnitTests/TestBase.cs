@@ -3,11 +3,12 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Moq;
-using CoreCreditsProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.CreditsProfile;
-using CoreFolderProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.FolderProfile;
-using CoreMovieProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.MovieProfile;
-using CoreGenreProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.GenreProfile;
-using CorePeopleProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.PeopleProfile;
+
+using AppCreditsProfile = Application.Data.AutoMapperConfiguration.Profiles.CreditsProfile;
+using AppFolderProfile = Application.Data.AutoMapperConfiguration.Profiles.FolderProfile;
+using AppMovieProfile = Application.Data.AutoMapperConfiguration.Profiles.MovieProfile;
+using AppGenreProfile = Application.Data.AutoMapperConfiguration.Profiles.GenreProfile;
+using AppPeopleProfile = Application.Data.AutoMapperConfiguration.Profiles.PeopleProfile;
 
 using WebCreditsProfile = Web.Models.AutoMapperProfiles.CreditsProfile;
 using WebMovieProfile = Web.Models.AutoMapperProfiles.MovieProfile;
@@ -30,12 +31,12 @@ namespace UnitTests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                //Core
-                cfg.AddProfile(new CoreMovieProfile());
-                cfg.AddProfile(new CoreCreditsProfile());
-                cfg.AddProfile(new CoreFolderProfile());
-                cfg.AddProfile(new CoreGenreProfile());
-                cfg.AddProfile(new CorePeopleProfile());
+                //Application
+                cfg.AddProfile(new AppMovieProfile());
+                cfg.AddProfile(new AppCreditsProfile());
+                cfg.AddProfile(new AppFolderProfile());
+                cfg.AddProfile(new AppGenreProfile());
+                cfg.AddProfile(new AppPeopleProfile());
                 
                 //Web
                 cfg.AddProfile(new WebMovieProfile());

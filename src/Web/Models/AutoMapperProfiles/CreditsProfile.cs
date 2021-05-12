@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Core.Application.Dto;
+﻿using Application.Dto;
+using AutoMapper;
 using Web.Models.Movie;
 using Web.Models.Person;
 

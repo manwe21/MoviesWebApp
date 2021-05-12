@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Core.Application.Dto;
+﻿using Application.Dto;
+using AutoMapper;
 using Web.Models.Folder;
 
 namespace Web.Models.AutoMapperProfiles

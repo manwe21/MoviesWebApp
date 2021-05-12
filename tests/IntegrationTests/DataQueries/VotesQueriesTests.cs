@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Data.QueryExtensions.Votes;
-using Core.Domain.Entities;
+using Application.Data.QueryExtensions.Votes;
 using Infrastructure.Data;
 using Xunit;
 

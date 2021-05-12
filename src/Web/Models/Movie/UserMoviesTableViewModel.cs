@@ -1,4 +1,4 @@
-﻿using Core.Application.Data.QueryExtensions.Pagination;
+﻿using Application.Data.QueryExtensions.Pagination;
 using Web.Models.Movie;
 using Web.Pages.User;
 

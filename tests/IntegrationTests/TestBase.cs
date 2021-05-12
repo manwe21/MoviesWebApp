@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using Application.Events;
 using AutoMapper;
-using Core.Application.Events;
-using Core.Domain.Entities;
+using Domain.Entities;
 using Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using CreditsProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.CreditsProfile;
-using FolderProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.FolderProfile;
-using MovieProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.MovieProfile;
-using GenreProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.GenreProfile;
-using PeopleProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.PeopleProfile;
+using CreditsProfile = Application.Data.AutoMapperConfiguration.Profiles.CreditsProfile;
+using FolderProfile = Application.Data.AutoMapperConfiguration.Profiles.FolderProfile;
+using MovieProfile = Application.Data.AutoMapperConfiguration.Profiles.MovieProfile;
+using GenreProfile = Application.Data.AutoMapperConfiguration.Profiles.GenreProfile;
+using PeopleProfile = Application.Data.AutoMapperConfiguration.Profiles.PeopleProfile;
 
 namespace IntegrationTests
 {
@@ -31,7 +31,7 @@ namespace IntegrationTests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                //Core
+                //Application
                 cfg.AddProfile(new MovieProfile());
                 cfg.AddProfile(new CreditsProfile());
                 cfg.AddProfile(new FolderProfile());

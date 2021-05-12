@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
+using Application.Services.Votes;
 using AutoMapper;
-using Core.Application.Services.Votes;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Application.Data.QueryExtensions.Pagination;
+using Application.Dto;
 using AutoMapper;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Application.Dto;
 using Web.Models.Search;
 using Web.Models.SearchTable;
 

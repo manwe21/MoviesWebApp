@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Application.Services.Genre;
+using Application.Services.Genre;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Components

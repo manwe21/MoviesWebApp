@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Dto;
+using Application.Services.Folders;
 using AutoMapper;
-using Core.Application.Dto;
-using Core.Application.Services.Folders;
-using Core.Application.Services.User;
-using Core.Application.Services.Votes;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

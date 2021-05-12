@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Data.QueryExtensions.Folders;
+using Application.Data.QueryExtensions.Folders;
 using Infrastructure.Data;
 using Xunit;
 

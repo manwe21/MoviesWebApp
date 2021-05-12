@@ -1,6 +1,6 @@
-﻿using AutoMapper;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Domain.Entities;
+﻿using Application.Data.QueryExtensions.Pagination;
+using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Api.JsonObjects;
 
 namespace Infrastructure.Data.AutoMapperProfiles

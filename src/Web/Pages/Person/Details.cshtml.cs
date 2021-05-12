@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.Services.Credits;
+using Application.Services.Movie;
+using Application.Services.People;
 using AutoMapper;
-using Core.Application.Services.Credits;
-using Core.Application.Services.Movie;
-using Core.Application.Services.People;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Web.Models.Movie;

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Application.Data.Criteria;
+using Application.Services.Movie;
 using AutoMapper;
-using Core.Application.Data.Criteria;
-using Core.Application.Services.Movie;
 using Microsoft.AspNetCore.Mvc;
 using Web.Attributes;
 using Web.Models.Movie;

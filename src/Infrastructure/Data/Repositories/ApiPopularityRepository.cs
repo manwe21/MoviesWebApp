@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Application.Data.Repositories;
-using Core.Domain.Entities;
 using System.Net.Http;
 using System.Text.Json;
+using Application.Data.QueryExtensions.Pagination;
+using Application.Data.Repositories;
 using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Api;
 using Infrastructure.Api.JsonObjects;
 

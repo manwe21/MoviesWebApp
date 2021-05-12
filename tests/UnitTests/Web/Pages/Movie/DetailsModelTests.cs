@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
-using Core.Application.Dto;
-using Core.Application.Services.Credits;
-using Core.Application.Services.Movie;
-using Core.Application.Services.Votes;
+using Application.Dto;
+using Application.Services.Credits;
+using Application.Services.Movie;
+using Application.Services.Votes;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

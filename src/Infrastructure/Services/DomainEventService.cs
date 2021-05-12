@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Core.Application.Events;
-using Core.Domain.Common;
+using Application.Events;
+using Domain.Common;
 using MediatR;
 
 namespace Infrastructure.Services

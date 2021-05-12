@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Dto;
+using Application.Dto;
 using Web.Models.Person;
 
 namespace Web.Services

@@ -1,7 +1,7 @@
 using System;
+using Application;
+using Application.Data.Repositories;
 using AutoMapper;
-using Core.Application;
-using Core.Application.Data.Repositories;
 using Infrastructure;
 using Infrastructure.Data.Repositories;
 using Infrastructure.Identity;

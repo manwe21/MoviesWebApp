@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Application.Data.Criteria;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Application.Dto;
-using Core.Application.Services.Movie;
+using Application.Data.Criteria;
+using Application.Data.QueryExtensions.Pagination;
+using Application.Dto;
+using Application.Services.Movie;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Web.Controllers;

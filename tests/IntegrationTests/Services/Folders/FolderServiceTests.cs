@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Application.Exceptions.HttpExceptions;
-using Core.Application.Services.Folders;
+using Application.Exceptions.HttpExceptions;
+using Application.Services.Folders;
 using Xunit;
 
 namespace IntegrationTests.Services.Folders

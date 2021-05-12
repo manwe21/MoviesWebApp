@@ -1,10 +1,10 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Core.Application;
-using Core.Application.Data;
-using Core.Application.Events;
-using Core.Domain.Common;
-using Core.Domain.Entities;
+using Application;
+using Application.Data;
+using Application.Events;
+using Domain.Common;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Core.Application.Data.QueryExtensions.Credits.Cast;
+using Application.Data.QueryExtensions.Credits.Cast;
 using Xunit;
 
 namespace IntegrationTests.DataQueries

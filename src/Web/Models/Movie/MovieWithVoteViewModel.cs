@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Core.Application.Dto;
+using Application.Dto;
 
 namespace Web.Models.Movie
 {

@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Application.Data.QueryExtensions.Pagination;
+using Application.Dto;
+using Application.Exceptions;
+using Application.Services.User;
+using Application.Services.Votes;
 using AutoMapper;
-using Core.Application.Data.QueryExtensions.Pagination;
-using Core.Application.Dto;
-using Core.Application.Exceptions;
-using Core.Application.Services.User;
-using Core.Application.Services.Votes;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
