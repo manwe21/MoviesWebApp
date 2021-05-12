@@ -120,13 +120,11 @@ namespace Infrastructure.Data
                 .WithMany(m => m.MovieFolders)
                 .HasForeignKey(mf => mf.MovieId);
 
-            //modelBuilder.Entity<Folder>()
-                //.OwnsOne(f => f.Name).Property(n => n.Name).HasColumnName("Name");
                 modelBuilder.Entity<Folder>().OwnsOne(f => f.Name, builder =>
                 {
-                    builder.Property(n => n.Name).HasColumnName("Name");
-                    builder.Property(f => f.Name).HasColumnType("string");
-                    builder.Property(u => u.Name).IsRequired();
+                    builder.Property(n => n.Value).HasColumnName("Name");
+                    builder.Property(f => f.Value).HasColumnType("string");
+                    builder.Property(u => u.Value).IsRequired();
                 });
 
             modelBuilder.Entity<Vote>().HasKey(r => new { r.UserId, r.MovieId });

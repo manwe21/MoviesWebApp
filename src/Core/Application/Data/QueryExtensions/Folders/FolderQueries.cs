@@ -15,7 +15,7 @@ namespace Core.Application.Data.QueryExtensions.Folders
 
         public static bool IsFolderWithNameAlreadyExists(this IQueryable<Folder> source, string userId, FolderName folderName)
         {
-            return source.Any(f => f.OwnerId == userId && f.Name.Name == folderName.Name);
+            return source.Any(f => f.OwnerId == userId && f.Name.Value == folderName.Value);
         }
     }
 }
