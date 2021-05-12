@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Core.Domain.Entities;
+using Core.Domain.ValueObjects;
 
 namespace Core.Application.Data.QueryExtensions.Folders
 {
@@ -12,9 +13,9 @@ namespace Core.Application.Data.QueryExtensions.Folders
                 .Where(f => f.MovieFolders.Any(mf => mf.MovieId == movieId));
         }
 
-        public static bool IsFolderWithNameAlreadyExists(this IQueryable<Folder> source, string userId, string name)
+        public static bool IsFolderWithNameAlreadyExists(this IQueryable<Folder> source, string userId, FolderName folderName)
         {
-            return source.Any(f => f.OwnerId == userId && f.Name == name);
+            return source.Any(f => f.OwnerId == userId && f.Name.Name == folderName.Name);
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using Core.Domain.Common;
+using Core.Domain.ValueObjects;
 
 namespace Core.Domain.Entities
 {
     public class Folder : BaseEntity
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+        public FolderName Name { get; set; }
+        //public string Name { get; set; }
         public string OwnerId { get; set; }
         public bool IsDefault { get; set; }
 

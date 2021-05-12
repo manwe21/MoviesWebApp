@@ -10,7 +10,8 @@ namespace Core.Application.Data.AutoMapperConfiguration.Profiles
         {
             CreateMap<Folder, FolderDto>()
                 .ForMember(dto => dto.MoviesCount,
-                    e => e.MapFrom(f => f.MovieFolders.Count));
+                    e => e.MapFrom(f => f.MovieFolders.Count))
+                .ForMember(dto => dto.Name, o => o.MapFrom(f => f.Name.Name));
         }
     }
 }

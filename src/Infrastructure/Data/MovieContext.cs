@@ -120,7 +120,16 @@ namespace Infrastructure.Data
                 .WithMany(m => m.MovieFolders)
                 .HasForeignKey(mf => mf.MovieId);
 
-            modelBuilder.Entity<Vote>().HasKey(r => new {r.UserId, r.MovieId});
+            //modelBuilder.Entity<Folder>()
+                //.OwnsOne(f => f.Name).Property(n => n.Name).HasColumnName("Name");
+                modelBuilder.Entity<Folder>().OwnsOne(f => f.Name, builder =>
+                {
+                    builder.Property(n => n.Name).HasColumnName("Name");
+                    builder.Property(f => f.Name).HasColumnType("string");
+                    builder.Property(u => u.Name).IsRequired();
+                });
+
+            modelBuilder.Entity<Vote>().HasKey(r => new { r.UserId, r.MovieId });
             modelBuilder.Entity<Vote>()
                 .HasOne(r => r.Movie)
                 .WithMany(m => m.Votes)
@@ -129,8 +138,6 @@ namespace Infrastructure.Data
             modelBuilder.Entity<SearchItem>().HasNoKey();
 
             modelBuilder.Entity<DomainEvent>().HasNoKey();
-            //modelBuilder.Entity<BaseEntity>().HasNoKey();
-            //modelBuilder.Entity<BaseEntity>().Ignore(e => e.Events);
         }
     }
 }

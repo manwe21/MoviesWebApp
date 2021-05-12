@@ -9,6 +9,7 @@ using Core.Application.Data.QueryExtensions.Pagination;
 using Core.Application.Dto;
 using Core.Application.Exceptions.HttpExceptions;
 using Core.Domain.Entities;
+using Core.Domain.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Services.Folders
@@ -52,13 +53,13 @@ namespace Core.Application.Services.Folders
         {
             var favoriteFolder = new Folder
             {
-                Name = "Favorite Movies",
+                Name = FolderName.FavoriteMovies,
                 IsDefault = true,
                 OwnerId = userId
             };  
             var watchLaterFolder = new Folder
             {
-                Name = "Watch Later",
+                Name = FolderName.WatchLater,
                 IsDefault = true,
                 OwnerId = userId
             };
