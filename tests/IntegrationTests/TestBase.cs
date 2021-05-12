@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutoMapper;
+using Core.Application.Events;
 using Core.Domain.Entities;
 using Infrastructure.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using CreditsProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.CreditsProfile;
 using FolderProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.FolderProfile;
 using MovieProfile = Core.Application.Data.AutoMapperConfiguration.Profiles.MovieProfile;
@@ -51,7 +54,7 @@ namespace IntegrationTests
             DbContextOptions<MovieContext> options = new DbContextOptionsBuilder<MovieContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                 .Options;
-            MovieContext db = new MovieContext(options);
+            MovieContext db = new MovieContext(options, new Mock<IDomainEventService>().Object);
             SeedDb(db);
             return db;
         }

@@ -14,8 +14,7 @@ namespace IntegrationTests.Services.Votes
         public async Task RateMovie_VoteAdded()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await service.RateMovieAsync(UserId1, 4, 7);
 
@@ -30,8 +29,7 @@ namespace IntegrationTests.Services.Votes
         public async Task RateMovie_MovieRatingChanged()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await service.RateMovieAsync(UserId1, 4, 7);
 
@@ -44,8 +42,7 @@ namespace IntegrationTests.Services.Votes
         public async Task RateMovie_MovieDoesNotExist_ThrownException()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await Assert.ThrowsAsync<ResourceNotFoundException>(async () =>
             {
@@ -57,8 +54,7 @@ namespace IntegrationTests.Services.Votes
         public async Task MarkMovieAsWatched_VoteAdded()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await service.MarkMovieAsWatchedAsync(UserId1, 4);
             
@@ -72,8 +68,7 @@ namespace IntegrationTests.Services.Votes
         public async Task UnmarkMovieAsWatched_VoteRemoved()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await service.UnmarkMovieAsWatchedAsync(UserId1, 1);
             
@@ -84,8 +79,7 @@ namespace IntegrationTests.Services.Votes
         public async Task UnmarkMovieAsWatched_MovieIsNotInWatchedList_ThrownException()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await Assert.ThrowsAsync<BadRequestException>(async () =>
             {
@@ -97,8 +91,7 @@ namespace IntegrationTests.Services.Votes
         public async Task GetVotesSimilarity_CorrectValueReturned()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
             
             int res = await service.GetVotesSimilarityAsync(UserId1, UserId2, 2);
             
@@ -109,8 +102,7 @@ namespace IntegrationTests.Services.Votes
         public async Task GetVotesSimilarity_NotEnoughMutualVotes_ExceptionThrown()
         {
             var db = CreateAndSeedDb();
-            var folderService = new FolderService(db);
-            var service = new VoteService(db, folderService);
+            var service = new VoteService(db);
 
             await Assert.ThrowsAsync<NotEnoughVotesException>(async () =>
             {
