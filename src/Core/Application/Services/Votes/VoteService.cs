@@ -7,6 +7,7 @@ using Core.Application.Exceptions;
 using Core.Application.Exceptions.HttpExceptions;
 using Core.Application.Services.Folders;
 using Core.Domain.Entities;
+using Core.Domain.Events;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Services.Votes
@@ -14,11 +15,9 @@ namespace Core.Application.Services.Votes
     public class VoteService : IVoteService
     {
         private readonly IMovieContext _db;
-        private readonly IFolderService _folderService;
 
-        public VoteService(IMovieContext db, IFolderService folderService)
+        public VoteService(IMovieContext db)
         {
-            _folderService = folderService;
             _db = db;
         }
 
@@ -55,6 +54,7 @@ namespace Core.Application.Services.Votes
             
             var newVote = CreateVote(userId, movieId);
             await AddVote(newVote);
+            
             await _db.SaveChangesAsync();
         }
             
@@ -128,14 +128,7 @@ namespace Core.Application.Services.Votes
         private async Task AddVote(Vote vote)
         {
             await _db.Votes.AddAsync(vote);
-            
-            //todo need to implement events
-            var foldersWithMovie = await _folderService.GetFoldersWithMovieAsync(vote.UserId, vote.MovieId);
-            var watchLater = foldersWithMovie.FirstOrDefault(f => f.Name == "Watch Later");
-            if (watchLater != null)
-            {
-                await _folderService.DeleteMovieFromFolderAsync(vote.UserId, watchLater.Id, vote.MovieId);
-            }
+            vote.Events.Add(new VoteCreatedEvent(vote));
         }
 
     }

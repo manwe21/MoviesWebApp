@@ -5,11 +5,13 @@ using System.Linq.Expressions;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Text.Json.Serialization;
+using Core.Domain.Common;
 
 namespace Core.Domain.Entities
 {
     public class Person : BaseEntity
     {
+        public int Id { get; set; }
         public string Name { get; set; }    
         public string ImagePath { get; set; }
 

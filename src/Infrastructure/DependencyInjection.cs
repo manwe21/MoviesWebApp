@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Core.Application;
 using Core.Application.Data;
+using Core.Application.Events;
 using Infrastructure.Api;
 using Infrastructure.Data;
 using Infrastructure.Identity;
@@ -31,8 +32,9 @@ namespace Infrastructure
                 options.Password.RequireNonAlphanumeric = false;
             });
 
-            services.AddScoped<Core.Application.IMovieContext>(provider => provider.GetService<MovieContext>());
+            services.AddScoped<IMovieContext>(provider => provider.GetService<MovieContext>());
             services.AddScoped<ISearchDataService, SearchDataService>();
+            services.AddScoped<IDomainEventService, DomainEventService>();
             services.AddUrlBuilder(options =>
             {
                 options.ApiKey = configuration["TMDBApiKey"];

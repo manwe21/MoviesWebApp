@@ -4,11 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.Json.Serialization;
+using Core.Domain.Common;
 
 namespace Core.Domain.Entities
 {
     public class Movie : BaseEntity
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Overview { get; set; }
         public DateTime ReleaseDate { get; set; }   

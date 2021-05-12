@@ -1,13 +1,19 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
+using Core.Application;
 using Core.Application.Data;
+using Core.Application.Events;
+using Core.Domain.Common;
 using Core.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Infrastructure.Data
 {
-    public class MovieContext : DbContext, Core.Application.IMovieContext
+    public class MovieContext : DbContext, IMovieContext
     {
+        private readonly IDomainEventService _domainEventService;
+        
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Genre> Genres { get; set; }
@@ -19,6 +25,11 @@ namespace Infrastructure.Data
         public DbSet<MovieFolder> MovieFolders { get; set; }
         public DbSet<Vote> Votes { get; set; }
         public DbSet<SearchItem> SearchItems { get; set; }
+        
+        public MovieContext(DbContextOptions<MovieContext> options, IDomainEventService domainEventService) : base(options)
+        {
+            _domainEventService = domainEventService;
+        }
 
         public IDbContextTransaction BeginTransaction()
         {
@@ -30,14 +41,27 @@ namespace Infrastructure.Data
             Database.CommitTransaction();
         }
 
-        public Task<int> SaveChangesAsync()
+        public async Task<int> SaveChangesAsync()
         {
-            return base.SaveChangesAsync();
+            var res = await base.SaveChangesAsync();
+            await DispatchDomainEvents();
+            return res;
         }
 
-        public MovieContext(DbContextOptions<MovieContext> options) : base(options)
+        private async Task DispatchDomainEvents()
         {
-            
+            while (true)
+            {
+                var domainEventEntity = ChangeTracker
+                    .Entries<BaseEntity>()
+                    .Select(x => x.Entity.Events)
+                    .SelectMany(x => x)
+                    .FirstOrDefault(domainEvent => !domainEvent.IsPublished);
+                if (domainEventEntity == null) break;
+
+                domainEventEntity.IsPublished = true;
+                await _domainEventService.Publish(domainEventEntity);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -103,6 +127,10 @@ namespace Infrastructure.Data
                 .HasForeignKey(r => r.MovieId);
 
             modelBuilder.Entity<SearchItem>().HasNoKey();
+
+            modelBuilder.Entity<DomainEvent>().HasNoKey();
+            //modelBuilder.Entity<BaseEntity>().HasNoKey();
+            //modelBuilder.Entity<BaseEntity>().Ignore(e => e.Events);
         }
     }
 }

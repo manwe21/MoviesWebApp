@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Domain.Common;
 
 namespace Core.Domain.Entities
 {
-    public class MovieFolder
+    public class MovieFolder : BaseEntity
     {
         public int MovieId { get; set; }
         public int FolderId { get; set; }
